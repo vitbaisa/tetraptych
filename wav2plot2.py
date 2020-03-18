@@ -15,8 +15,10 @@ fw = animation.FFMpegWriter(FPS)
 fig.set_size_inches(192, 27)
 
 sample_rate, data = wavfile.read('alone.wav')
-mono = (data.T[0] + data.T[1]) / 2.0 # average stereo into mono
-secs = int(len(mono) / sample_rate)+1
+#mono = (data.T[0] + data.T[1]) / 2.0 # average stereo into mono
+left = data.T[0]
+right = data.T[1]
+secs = int(len(left) / sample_rate)+1
 spf = int(sample_rate / FPS)
 q = sample_rate / spf
 
@@ -24,7 +26,14 @@ with fw.saving(fig, "plot2.mp4", 14):
     for frame in range(secs * FPS):
         print(frame)
         ax.clear()
-        ax.set_ylim(-50000, 50000)
-        slot = mono[frame*spf:(frame+1)*spf]
-        ax.plot(slot, color="yellow", linewidth=16)
+        ax.axis('off')
+        ax.set_ylim(-30000, 30000)
+
+        #slot_mono = mono[frame*spf:(frame+1)*spf]
+        slot_left = left[frame*spf:(frame+1)*spf]
+        slot_right = right[frame*spf:(frame+1)*spf]
+        #ax.plot(slot_mono, color="green", linewidth=2)
+        ax.plot(slot_left, color="blue", linewidth=20)
+        ax.plot(slot_right, color="yellow", linewidth=20)
+        #plt.pause(1/10)
         fw.grab_frame()

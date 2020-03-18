@@ -23,6 +23,7 @@ for frame in range(secs * FPS):
     fourier *= 255/fourier.max()
     for i, peak in enumerate(fourier[:135]):
         p = int(peak)
-        pixels[frame, i] = (p, p, p, 255)
+        pixels[frame, 2*i] = (p, p, p, 255)
+        pixels[frame, 2*i+1] = (p, p, p, 255)
 
-image.save("spectrum.png")
+image.save("spectrum2.png")
